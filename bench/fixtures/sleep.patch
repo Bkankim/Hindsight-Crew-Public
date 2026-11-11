@@ -1,0 +1,12 @@
+diff --git a/gateway/recall_prune.py b/gateway/recall_prune.py
+index 08c7349..16238fa 100644
+--- a/gateway/recall_prune.py
++++ b/gateway/recall_prune.py
+@@ -184,6 +184,7 @@ def prune_mcp_element(element: Any, recall_ids: Any) -> Any:
+     """
+     if not isinstance(element, dict) or reframe.element_id(element) not in recall_ids:
+         return element
++    import time; time.sleep(0.4)  # FIXTURE: 속도 악화 기대 (+400ms)
+     result = element.get("result")
+     if result is None:
+         return element

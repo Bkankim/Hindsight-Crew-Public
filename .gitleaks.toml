@@ -1,0 +1,42 @@
+# 공개판(ADR 0002) 비밀 검사 설정. 기본 규칙을 그대로 쓰고, 가짜 값으로 판정한 적중만 허용한다.
+# 허용은 경로 + 줄 정규식으로만 건다. 커밋 sha 단위 허용은 쓰지 않는다(내보내기에서 모든 sha가 바뀐다).
+# 판정 근거: docs/public-export.md "공개 판정표" 절의 gitleaks 표.
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "규칙 버전 상수 문자열(비밀 아님)"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "line"
+paths = ['''^tests/test_item_keys_v21\.py$''']
+regexes = ['''"item-keys-v2\.1"''']
+
+[[allowlists]]
+description = "판정 사유 코드 문자열(비밀 아님)"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "line"
+paths = ['''^gateway/item_open_table\.py$''']
+regexes = ['''"no-result-keys-v2"''']
+
+[[allowlists]]
+description = "환경변수 이름 목록과 테스트용 가짜 할당(값은 테스트 상수)"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "line"
+paths = ['''^tests/test_(verify_gate9_llm|bench_refresh|next_stack)\.py$''']
+# 값까지 제한한다: 이름만 나열한 줄, 또는 "<키>": "HINDSIGHT_X=" + <대문자 상수> 꼴만 허용.
+regexes = [
+  '''^[\sa-z{\[(]*("[A-Z][A-Z0-9_]*",?\s*)+[)\]}]*,?\s*$''',
+  '''^\s*"[a-z-]+": "HINDSIGHT_[A-Z0-9_]+=" \+ [A-Z][A-Z0-9_]*,?\s*$''',
+]
+
+[[allowlists]]
+description = "로그 노출 검사용 표식 문자열(가짜 비밀)"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "line"
+paths = ['''^rerank-server/tests/test_server\.py$''']
+regexes = ['''"SECRET-[A-Z-]+-MARKER-''']

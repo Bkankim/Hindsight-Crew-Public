@@ -1,0 +1,9 @@
+# 개발·테스트 전용 의존성 (N4). 프로덕션 gateway/requirements.txt 는 불변 -
+# 여기 항목들은 게이트웨이 이미지에 들어가지 않는다.
+pytest>=8.0
+
+# MCP 공식 Python SDK: 리프레이머 산출물이 실제 MCP 클라이언트 타입으로 소비되는지
+# (tests/test_reframe.py 변조 왕복) 검증하는 용도로만 쓴다.
+# requires-python >= 3.10 이라 로컬 레거시 .venv(3.9.6)에서는 마커로 자동 제외되고
+# 해당 테스트는 pytest.importorskip 으로 SKIP 된다. CI(3.11)에서는 실제로 설치·실행된다.
+mcp>=1.9; python_version >= "3.10"

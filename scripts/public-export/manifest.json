@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "about": "공개판(ADR 0002) 경계. 형식 정본은 docs/public-export.md '공개 판정표' 절. 경로 표기: '/'로 끝나면 디렉터리 접두, '*'(한 조각)·'**'(여러 조각)가 있으면 glob, 그 밖은 정확한 경로. 이 파일 자신은 내용 검사 대상이 아니다. 금칙·치환·accept 값은 숨긴 맥락의 단서라 이 파일에 두지 않고 리포 밖 로컬 규칙 파일(--local-rules)에 둔다(이 파일의 세 키는 빈 목록).",
+  "include": [
+    ".env.example",
+    ".github/",
+    ".gitignore",
+    ".gitleaks.toml",
+    "CONTEXT.md",
+    "LICENSE",
+    "README.en.md",
+    "README.md",
+    "artifacts/arch-v2/",
+    "bench/",
+    "bootstrap",
+    "docker-compose.next.yml",
+    "docker-compose.yml",
+    "docs/THREAT-MODEL.md",
+    "docs/adr/",
+    "docs/benchmarks.md",
+    "docs/model-refresh-cron.md",
+    "docs/operating-guide.md",
+    "docs/operations.md",
+    "docs/public-export.md",
+    "fixtures/",
+    "gateway/",
+    "install",
+    "policies/",
+    "profiles/",
+    "pytest.ini",
+    "requirements-dev.txt",
+    "rerank-server/",
+    "scripts/README.md",
+    "scripts/audit_log_reader.py",
+    "scripts/backup.sh",
+    "scripts/bank-config.py",
+    "scripts/bank_stats.py",
+    "scripts/contract-probe.sh",
+    "scripts/duplicate_recall.py",
+    "scripts/fetch-claude-cli.sh",
+    "scripts/hc-host-env.sh",
+    "scripts/hc-python.sh",
+    "scripts/hc_host_env.py",
+    "scripts/install/",
+    "scripts/item-backfill.py",
+    "scripts/item-roles-observe.sh",
+    "scripts/item_roles_observe.py",
+    "scripts/item_roles_sidecar.py",
+    "scripts/launchd/README.md",
+    "scripts/launchd/__PREFIX__.*.plist.example",
+    "scripts/llm-migrate-opus.py",
+    "scripts/mcp-probe.sh",
+    "scripts/model-audit.sh",
+    "scripts/model-refresh.sh",
+    "scripts/model-watch.sh",
+    "scripts/model_audit.py",
+    "scripts/model_cron.py",
+    "scripts/model_watch.py",
+    "scripts/next-stack.sh",
+    "scripts/policy-split.py",
+    "scripts/profile-detect.sh",
+    "scripts/public-export/",
+    "scripts/render-launchd.py",
+    "scripts/restore-test.sh",
+    "scripts/scheduled-checks.sh",
+    "scripts/scheduled_checks.py",
+    "scripts/scope-migrate.py",
+    "scripts/secret-hygiene.sh",
+    "scripts/seed-demo.sh",
+    "scripts/tag-hygiene-export.sh",
+    "scripts/tag-migrate.sh",
+    "scripts/tag_hygiene.py",
+    "scripts/tag_migrate.py",
+    "scripts/tag_retag_plan.py",
+    "scripts/teardown.sh",
+    "scripts/trigger_drafts.py",
+    "templates/",
+    "tests/",
+    "verify/"
+  ],
+  "exclude_history": [
+    {
+      "path": "artifacts/arch-v2-window/",
+      "reason": "운영 창 실행 기록(전환·검증 출력)"
+    },
+    {
+      "path": "artifacts/recall-dup/",
+      "reason": "운영 뱅크 측정 원자료"
+    },
+    {
+      "path": "artifacts/v1-cutover/",
+      "reason": "운영 전환 기록"
+    },
+    {
+      "path": "artifacts/v1.1-cutover/",
+      "reason": "운영 전환 기록"
+    },
+    {
+      "path": "artifacts/*.json",
+      "reason": "운영 검증 출력"
+    },
+    {
+      "path": "artifacts/*.out",
+      "reason": "운영 검증 출력"
+    },
+    {
+      "path": "artifacts/*.log",
+      "reason": "운영 감사 로그 사본"
+    },
+    {
+      "path": "tests/fixtures/policies/b?/",
+      "reason": "옛 개인 정책 사본 fixture(데모 fixture tests/fixtures/policies/sample/로 대체)"
+    },
+    {
+      "path": "docs/08-*-deployment-assessment-*.md",
+      "reason": "삭제된 운영 점검 메모(#4 감사)"
+    },
+    {
+      "path": "bench/fixtures/cache.patch",
+      "reason": "삭제된 운영 캐시 패치(#4 감사)"
+    },
+    {
+      "path": "gateway/list_models_default.py",
+      "reason": "삭제된 운영 오버레이 코드(#4 감사)"
+    },
+    {
+      "path": "tests/test_list_models_default.py",
+      "reason": "위 코드의 삭제된 테스트(#4 감사)"
+    },
+    {
+      "path": "tests/test_list_models_default_app.py",
+      "reason": "위 코드의 삭제된 테스트(#4 감사)"
+    },
+    {
+      "path": "overlays/hindsight/",
+      "reason": "삭제된 운영 업스트림 오버레이(#4 감사)"
+    },
+    {
+      "path": "tests/overlay/",
+      "reason": "위 오버레이의 삭제된 테스트(#4 감사)"
+    },
+    {
+      "path": "scripts/test-overlay.sh",
+      "reason": "위 오버레이의 삭제된 검사 스크립트(#4 감사)"
+    },
+    {
+      "path": "docs/plans/",
+      "reason": "운영 계획·체크리스트(운영자 기록, 운영판 전용)"
+    },
+    {
+      "path": "docs/deploy-procedure.md",
+      "reason": "운영자 배포 런북(운영 호스트 경로·토큰 주입·운영 이슈 링크, 운영판 전용)"
+    },
+    {
+      "path": "docs/RUNBOOK.md",
+      "reason": "운영자 런북(운영 뱅크 재태깅·운영 gotcha, 운영판 전용)"
+    },
+    {
+      "path": "docs/*-window.md",
+      "reason": "운영 전환 창 절차서·실행 기록(운영판 전용)"
+    },
+    {
+      "path": "docs/public-export-rehearsals.md",
+      "reason": "공개판 리허설 기록(운영 LaunchAgent·볼륨·기준선, 운영판 전용)"
+    },
+    {
+      "path": "docs/analysis/",
+      "reason": "운영 뱅크 실사용 로그 분석(운영 데이터 집계, artifacts/recall-dup/ 원자료와 같은 취급)"
+    },
+    {
+      "path": "scripts/retag-map.json",
+      "reason": "운영자 재태깅 표(운영 뱅크 태그 데이터, 일회성. 테스트는 tests/fixtures/tag_retag/ 데모 사본)"
+    }
+  ],
+  "public_words": [
+    "aside",
+    "github",
+    "orca",
+    "personal",
+    "hindsight-crew",
+    "Bkankim"
+  ],
+  "public_literals": [
+    "github.com/Bkankim/Hindsight-Crew-Public",
+    "memory-vault"
+  ],
+  "history_rewrite_paths": [
+    "tests/",
+    "fixtures/",
+    "docs/",
+    "bench/",
+    "artifacts/arch-v2/",
+    "CONTEXT.md",
+    "scripts/",
+    "gateway/",
+    "verify/",
+    "profiles/",
+    "rerank-server/",
+    ".gitignore",
+    "policies/bank-policies.json",
+    "policies/context-triggers.json",
+    "README.md",
+    "README.en.md",
+    "docker-compose.yml"
+  ],
+  "deny_patterns": [],
+  "accept": [],
+  "message_rewrites": []
+}

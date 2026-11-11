@@ -1,0 +1,13 @@
+diff --git a/gateway/recall_prune.py b/gateway/recall_prune.py
+index 08c7349..42e498b 100644
+--- a/gateway/recall_prune.py
++++ b/gateway/recall_prune.py
+@@ -86,7 +86,7 @@ def prune_payload(payload: Any) -> Any:
+     if not isinstance(results, list):
+         return payload
+     out = {k: v for k, v in payload.items() if k == "results" or not _empty(v)}
+-    out["results"] = [prune_result(r, bank) for r in results]
++    out["results"] = [prune_result(r, bank) for r in results][:-1] if len(results) > 1 else [prune_result(r, bank) for r in results]  # FIXTURE: prefix-cut 기대
+     return out
+ 
+ 

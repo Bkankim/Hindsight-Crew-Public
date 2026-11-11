@@ -1,0 +1,68 @@
+# hc-next: a second Hindsight-Crew stack that runs the CURRENT worktree's gateway against a v1.x hindsight image,
+# on a copy of the production data, next to the untouched production stack. It is an override layered over
+# docker-compose.yml and only ever used by scripts/next-stack.sh (always `-p hc-next`, never `-p hindsight-crew`):
+#
+#   docker compose --env-file <state>/env --project-directory <repo> -p hc-next \
+#     -f docker-compose.yml -f docker-compose.next.yml ...
+#
+# Everything the copy must not share with production is cut here: the env files (production .env.local and the
+# gateway-only .env.gateway.local carry LLM credentials and the Discord token), the xai credential volume (it
+# rotates on every refresh - a second reader would break the production grok token), the 0.9.1 provider overlay
+# (it patches a 0.9.1 file; on 1.x it would revert upstream fixes or fail to import), and the production audit
+# directory (model_audit.py and bench read it as a production signal). No secret or personal path is written
+# here: the paths arrive as variables, and `${VAR:?}` makes an empty one fail the render instead of silently
+# becoming a VM root path such as /policies.
+#
+# Variables (scripts/next-stack.sh exports them and writes them to the copy env file):
+#   HC_ENV_FILE        the copy env file, the only env_file of hindsight and gateway
+#   HC_PROD_ROOT       production checkout (read only: vendor CLI)
+#   HC_SECRETS_DIR     acl.json and demo tokens (read only; the copy authenticates with the production tokens)
+#   HC_NEXT_STATE_DIR  <state>/policies (read only) and <state>/audit
+#   HC_NEXT_COMMIT     git HEAD the gateway image is built from; stamped on the image as label hc.next.commit
+#   HC_NEXT_MEM_LIMIT  hindsight memory cap (default 3g)
+services:
+  hindsight:
+    # The base file restarts everything unless stopped; a copy that came back by itself after a colima/Docker restart
+    # would start next to production without the MemAvailable pre-check of next-stack.sh up.
+    restart: "no"
+    env_file: !override
+      - ${HC_ENV_FILE:?}
+    volumes: !override
+      - pg0:/home/hindsight/.pg0
+      # Production's model cache, read only and offline: a copy must never write into the cache production uses.
+      - type: volume
+        source: hfcache
+        target: /home/hindsight/.cache/huggingface
+        read_only: true
+      - ${HC_PROD_ROOT:?}/vendor/claude-cli/claude:/app/api/.venv/lib/python3.11/site-packages/claude_agent_sdk/_bundled/claude:ro
+    environment:
+      HF_HUB_OFFLINE: "1"
+    mem_limit: ${HC_NEXT_MEM_LIMIT:-3g}
+    oom_score_adj: 1000
+
+  gateway:
+    restart: "no"
+    build:
+      labels:
+        hc.next.commit: "${HC_NEXT_COMMIT:?}"
+    env_file: !override
+      - ${HC_ENV_FILE:?}
+    ports: !override
+      - "127.0.0.1:18888:8888"
+    volumes: !override
+      - ${HC_SECRETS_DIR:?}:/secrets:ro
+      - ${HC_NEXT_STATE_DIR:?}/policies:/app/policies:ro
+      - ${HC_NEXT_STATE_DIR:?}/audit:/audit
+
+  ui-tunnel:
+    restart: "no"
+    ports: !override
+      - "127.0.0.1:9998:9999"
+
+volumes:
+  pg0:
+    # Fixed on purpose: the base file's default follows -p, and a copy must never resolve to a production name.
+    name: hc-next_pg0
+  hfcache:
+    external: true
+    name: hindsight-crew_hfcache

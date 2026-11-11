@@ -1,0 +1,36 @@
+{
+  "probedAt": "2026-10-29T10:13:50Z",
+  "method": "POST",
+  "path": "/v1/default/banks/probe-n0/memories",
+  "request": {
+    "items": [
+      {
+        "content": "[probe] rest fail probe-n0-20261029T101342Z",
+        "tags": [
+          "kind:probe"
+        ],
+        "timestamp": "not-a-timestamp"
+      }
+    ],
+    "async": false
+  },
+  "status": 422,
+  "response": {
+    "detail": [
+      {
+        "type": "value_error",
+        "loc": [
+          "body",
+          "items",
+          0,
+          "timestamp"
+        ],
+        "msg": "Value error, Invalid timestamp/event_date format: 'not-a-timestamp'. Expected ISO format like '2024-01-15T10:30:00' or '2024-01-15T10:30:00Z', or the special value 'unset' to store without a timestamp.",
+        "input": "not-a-timestamp",
+        "ctx": {
+          "error": {}
+        }
+      }
+    ]
+  }
+}

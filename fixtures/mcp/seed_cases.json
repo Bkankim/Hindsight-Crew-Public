@@ -1,0 +1,13 @@
+{
+  "probedAt": "2026-10-29T10:14:33Z",
+  "bank": "probe-n0",
+  "seedBody": "[발견] 프로브 시드 - 헤드리스 브라우저를 재시작하면 로그인 쿠키가 사라져 사용자 데이터 디렉터리를 고정해야 세션이 유지된다",
+  "retainBody": "[발견] 프로브 시드 - 헤드리스 브라우저를 다시 띄우면 로그인 쿠키가 사라진다. 사용자 데이터 디렉터리를 고정해야 세션이 유지된다",
+  "seedTags": [
+    "project:hindsight-crew",
+    "kind:gotcha"
+  ],
+  "recallQuery": "브라우저를 다시 띄워도 로그인 세션을 유지하려면 어떻게 해야 하나",
+  "reflectQuery": "프로브 시드 함정은 무엇이고 어떻게 피하나",
+  "badTimestamp": "not-a-timestamp"
+}

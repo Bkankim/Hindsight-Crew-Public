@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>__PREFIX__.hindsight-rerank</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__UV__</string>
+    <string>run</string>
+    <string>--project</string>
+    <string>__REPO__/rerank-server</string>
+    <string>uvicorn</string>
+    <string>server:app</string>
+    <string>--host</string>
+    <string>127.0.0.1</string>
+    <string>--port</string>
+    <string>8787</string>
+  </array>
+  <key>WorkingDirectory</key><string>__REPO__/rerank-server</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ProcessType</key><string>Interactive</string>
+  <key>ThrottleInterval</key><integer>60</integer>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>RERANK_BIND</key><string>127.0.0.1</string>
+    <key>RERANK_PORT</key><string>8787</string>
+    <key>RERANK_MODEL</key><string>BAAI/bge-reranker-v2-m3</string>
+    <key>RERANK_MODEL_REVISION</key><string>953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e</string>
+    <key>RERANK_BATCH_SIZE</key><string>16</string>
+		<key>RERANK_MAX_LENGTH</key><string>512</string>
+    <key>MAX_QUEUE_DEPTH</key><string>3</string>
+    <key>RERANK_QUEUE_TIMEOUT_SECONDS</key><string>31.5</string>
+    <key>RERANK_TOTAL_DEADLINE_SECONDS</key><string>7.5</string>
+    <key>RERANK_MAX_TEXTS</key><string>256</string>
+    <key>IDLE_TRIM_SECONDS</key><string>1800</string>
+    <key>HF_HUB_OFFLINE</key><string>1</string>
+    <key>HOME</key><string>__HOME__</string>
+    <key>PATH</key><string>__PATH__</string>
+  </dict>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/hindsight-rerank/server.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/hindsight-rerank/server.log</string>
+</dict>
+</plist>

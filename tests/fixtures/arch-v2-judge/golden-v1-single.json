@@ -1,0 +1,38 @@
+{
+ "paths": {
+  "a_reflect_list": {
+   "C01": "not-open",
+   "C02": "open",
+   "K01": "not-open",
+   "K02": "not-open",
+   "K03": "not-open",
+   "K04": "open"
+  },
+  "b_knowledge_page_status": {
+   "C01": "open",
+   "C02": "open",
+   "K01": "open",
+   "K02": "open",
+   "K03": "not-open",
+   "K04": "invalid"
+  },
+  "c_recall_status": {
+   "C01": "open",
+   "C02": "open",
+   "K01": "not-open",
+   "K02": "open",
+   "K03": "not-open",
+   "K04": "open"
+  }
+ },
+ "query_timestamp": "2026-10-28T14:59:59Z",
+ "set": [
+  "K01",
+  "K02",
+  "K03",
+  "K04",
+  "C01",
+  "C02"
+ ],
+ "target": "next"
+}

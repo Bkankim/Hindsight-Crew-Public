@@ -1,0 +1,247 @@
+{
+ "a_reflect_list": {
+  "query": "SYNTH",
+  "response": {
+   "based_on": {
+    "observation": [
+     {
+      "id": "f2",
+      "mentioned_at": "2026-10-01T00:00:00+00:00",
+      "tags": [],
+      "text": "fact two",
+      "type": "world"
+     }
+    ],
+    "world": [
+     {
+      "id": "f1",
+      "mentioned_at": "2026-10-10T00:00:00+00:00",
+      "tags": [],
+      "text": "fact one",
+      "type": "world"
+     }
+    ]
+   },
+   "text": "Status as of the query date.\n## OPEN\n### proj-a\n- **#903**: control item still open.\n- **#902 follow-up (after #901)**: other work scheduled after the window.\n  - It was blocked until after #901 finished.\n- **Waiting on a decision**:\n  - #904\n- **proj-a #905**: second control, named with the project.\n### other\n- gamma-kw review pending\n- **delta-kw (the delta task)**: still running\n## DONE\n- **#901**: closed 10-16.\n- beta-kw merged"
+  }
+ },
+ "b_knowledge_page_status": {
+  "-": {
+   "based_on": {
+    "observation": [
+     {
+      "id": "f2",
+      "mentioned_at": "2026-10-01T00:00:00+00:00",
+      "tags": [],
+      "text": "fact two",
+      "type": "world"
+     }
+    ],
+    "world": [
+     {
+      "id": "f1",
+      "mentioned_at": "2026-10-10T00:00:00+00:00",
+      "tags": [],
+      "text": "fact one",
+      "type": "world"
+     }
+    ]
+   },
+   "content": "## OPEN\n- echo-kw still running\n- gamma-kw open\n## DONE\n- beta-kw done",
+   "name": "p-all"
+  },
+  "proj-a": {
+   "based_on": {
+    "observation": [
+     {
+      "id": "f2",
+      "mentioned_at": "2026-10-01T00:00:00+00:00",
+      "tags": [],
+      "text": "fact two",
+      "type": "world"
+     }
+    ],
+    "world": [
+     {
+      "id": "f1",
+      "mentioned_at": "2026-10-10T00:00:00+00:00",
+      "tags": [],
+      "text": "fact one",
+      "type": "world"
+     }
+    ]
+   },
+   "content": "## OPEN\n- **#903 cleanup**: pending\n- **#902** waiting (see #904)\n  - sub line about #901 after the window\n## DONE\n- **#904**: merged",
+   "name": "p-a"
+  }
+ },
+ "c_recall_status": {
+  "B01": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r9",
+     "mentioned_at": "2026-10-11T00:00:00+00:00",
+     "tags": [
+      "kind:completion"
+     ],
+     "text": "[완료] proj-a #904 머지",
+     "type": "world"
+    },
+    {
+     "id": "r10",
+     "mentioned_at": "2026-10-18T00:00:00+00:00",
+     "tags": [],
+     "text": "#904 뒤 다른 일 대기",
+     "type": "world"
+    }
+   ]
+  },
+  "B02": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r11",
+     "mentioned_at": "2026-10-10T00:00:00+00:00",
+     "tags": [],
+     "text": "unrelated row",
+     "type": "world"
+    }
+   ]
+  },
+  "BC01": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r12",
+     "mentioned_at": "2026-10-19T00:00:00+00:00",
+     "tags": [
+      "kind:handoff"
+     ],
+     "text": "[인계] proj-a #905 대기",
+     "type": "world"
+    }
+   ]
+  },
+  "C01": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r7",
+     "mentioned_at": "2026-10-20T00:00:00+00:00",
+     "tags": [
+      "kind:handoff"
+     ],
+     "text": "[인계] proj-a #903 아직 남음",
+     "type": "world"
+    }
+   ]
+  },
+  "C02": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r8",
+     "mentioned_at": "2026-10-12T00:00:00+00:00",
+     "tags": [],
+     "text": "gamma-kw 진행 예정",
+     "type": "world"
+    }
+   ]
+  },
+  "K01": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r1",
+     "mentioned_at": "2026-10-10T00:00:00+00:00",
+     "tags": [
+      "kind:handoff"
+     ],
+     "text": "[인계] alpha-kw 남은 일",
+     "type": "world"
+    },
+    {
+     "id": "r2",
+     "mentioned_at": "2026-10-16T00:00:00+00:00",
+     "tags": [
+      "kind:completion"
+     ],
+     "text": "[완료] alpha-kw 머지",
+     "type": "world"
+    }
+   ]
+  },
+  "K02": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r3",
+     "mentioned_at": "2026-10-16T00:00:00+00:00",
+     "tags": [
+      "kind:completion"
+     ],
+     "text": "proj-a #902 배포 완료. 남은 과제는 #902 7일 관찰이다.",
+     "type": "experience"
+    }
+   ]
+  },
+  "K03": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r4",
+     "mentioned_at": "2026-10-10T00:00:00+00:00",
+     "tags": [
+      "kind:decision"
+     ],
+     "text": "[결정] beta-kw 방식",
+     "type": "world"
+    }
+   ]
+  },
+  "K04": {
+   "query": "SYNTH",
+   "results": [
+    {
+     "id": "r5",
+     "mentioned_at": null,
+     "tags": [
+      "kind:handoff"
+     ],
+     "text": "[인계] delta-kw 남음",
+     "type": "world"
+    },
+    {
+     "id": "r6",
+     "mentioned_at": null,
+     "tags": [
+      "kind:completion"
+     ],
+     "text": "[완료] delta-kw 끝",
+     "type": "world"
+    }
+   ]
+  }
+ },
+ "meta": {
+  "pages": {
+   "map": null,
+   "mode": "read",
+   "suffix": ""
+  },
+  "set": [
+   "K01",
+   "K02",
+   "K03",
+   "K04",
+   "C01",
+   "C02",
+   "B01",
+   "B02",
+   "BC01"
+  ],
+  "target": "next",
+  "undated_ok": true
+ }
+}

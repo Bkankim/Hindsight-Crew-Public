@@ -1,0 +1,69 @@
+{
+ "closed": [
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "K01",
+   "item": "SYNTH-ITEM-K01",
+   "keywords": [
+    "alpha-kw",
+    "#901"
+   ],
+   "project_hint": "proj-a"
+  },
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "K02",
+   "item": "SYNTH-ITEM-K02",
+   "keywords": [
+    "#902"
+   ],
+   "project_hint": "proj-a"
+  },
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "K03",
+   "item": "SYNTH-ITEM-K03",
+   "keywords": [
+    "beta-kw"
+   ],
+   "project_hint": null
+  },
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "K04",
+   "item": "SYNTH-ITEM-K04",
+   "keywords": [
+    "delta-kw"
+   ],
+   "project_hint": "proj-b"
+  }
+ ],
+ "controls": [
+  {
+   "expect": "open",
+   "id": "C01",
+   "item": "SYNTH-ITEM-C01",
+   "keywords": [
+    "#903"
+   ],
+   "project_hint": "proj-a"
+  },
+  {
+   "expect": "open",
+   "id": "C02",
+   "item": "SYNTH-ITEM-C02",
+   "keywords": [
+    "gamma-kw"
+   ],
+   "project_hint": null
+  }
+ ],
+ "ignore_mentioned_at_from": "2026-10-28T15:00:00Z",
+ "query_date": "2026-10-28",
+ "query_instruction": "SYNTH-INSTRUCTION answer as of the query date",
+ "schema_version": 1
+}

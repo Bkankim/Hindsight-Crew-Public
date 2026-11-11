@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- issue #415 R7-8: S3 3상태 표 재활성화 뒤 첫 1주 매시간 관찰 점검(읽기 전용). 설치하지 않는 것이 기본이다
+       (설치는 승인 창 몫, 명령은 scripts/launchd/README.md "Item-roles observe"). 역할 저장소 근거 나이·stale·error, 사이드카 launchd
+       마지막 종료 코드, 사이드카 로그 GitHub 단계 오류를 보고 이상이면 Discord 한 줄(같은 이상은 6시간에 한 번).
+       마지막 인자 expect-github: 재활성화 뒤라 근거 테이블이 없으면(수집 꺼짐) 이상으로 본다.
+       첫 1주 뒤 끄기: launchctl bootout "gui/$(id -u)/__PREFIX__.hindsight-item-roles-observe" 후
+       rm ~/Library/LaunchAgents/__PREFIX__.hindsight-item-roles-observe.plist (상태 파일 observe-state.json 도 지워도 된다). -->
+  <key>Label</key><string>__PREFIX__.hindsight-item-roles-observe</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__REPO__/scripts/item-roles-observe.sh</string>
+    <string>--expect-github</string>
+  </array>
+  <key>StartInterval</key><integer>3600</integer>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/hindsight-item-roles/observe.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/hindsight-item-roles/observe.log</string>
+</dict>
+</plist>

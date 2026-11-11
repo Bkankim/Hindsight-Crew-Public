@@ -1,0 +1,122 @@
+{
+  "run_id": "t",
+  "baseline": "a",
+  "candidate": "b",
+  "split": "dev",
+  "n_queries": 10,
+  "rounds": 3,
+  "bench_clock": "2026-01-01T00:00:00Z",
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "too-few-queries:10<30",
+    "cold-unmeasured:no-cold-input"
+  ],
+  "accuracy": {
+    "verdict": "invariant",
+    "classes": {
+      "identical": 10
+    },
+    "baseline_nondeterministic": 0,
+    "bad_keys": []
+  },
+  "cost": {
+    "verdict": "unchanged",
+    "rel_change": 0.0,
+    "baseline_tokens": 10000.0,
+    "candidate_tokens": 10000.0,
+    "queries_increased": 0,
+    "queries_decreased": 0,
+    "worst_queries": [
+      [
+        "q00",
+        0.0
+      ],
+      [
+        "q01",
+        0.0
+      ],
+      [
+        "q02",
+        0.0
+      ],
+      [
+        "q03",
+        0.0
+      ],
+      [
+        "q04",
+        0.0
+      ]
+    ]
+  },
+  "speed": {
+    "verdict": "inconclusive",
+    "crossover": false,
+    "geo_mean_ratio": 1.0,
+    "ci95": [
+      1.0,
+      1.0
+    ],
+    "margin": 0.01,
+    "aa_excess": 0.0,
+    "n_queries": 10,
+    "incomplete_phase_queries": null,
+    "tail": {
+      "queries_over": 0,
+      "limit": 2,
+      "regressed": false
+    },
+    "tail_regressed": false,
+    "p95_ratio": 1.0,
+    "p95_ci95": [
+      1.0,
+      1.0
+    ],
+    "tail_metrics": {
+      "p95": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "aa_noise": 0.0,
+        "tolerance": 0.01,
+        "n": 27,
+        "verdict": "ok"
+      },
+      "p99": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "aa_noise": 0.0,
+        "tolerance": 0.01,
+        "n": 27,
+        "verdict": "ok"
+      }
+    },
+    "order_effect": {
+      "checked": true,
+      "mean_log_diff": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "state_dependent": false
+    },
+    "pairs": 30,
+    "contaminated_pairs": 0,
+    "contamination_rate": 0.0,
+    "prod_windows": 0,
+    "baseline_median_ms": 5177.5,
+    "candidate_median_ms": 5177.5
+  },
+  "provenance": null,
+  "configs": null,
+  "warm_verdict": "INCONCLUSIVE",
+  "cold": {
+    "verdict": "unmeasured",
+    "reason": "no-cold-input"
+  }
+}

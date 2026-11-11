@@ -1,0 +1,149 @@
+# Hindsight-Crew stack (hindsight v1.x; the production pin is HC_HINDSIGHT_IMAGE in .env.local).
+# Hindsight bundles an EMBEDDED Postgres (pg0) at /home/hindsight/.pg0 — NO separate
+# postgres service. It runs rootless (UID 1000); pg0 needs a NAMED volume (host binds
+# break permissions on macOS/non-1000 hosts). hindsight is INTERNAL-only; the gateway is
+# the single host-published front door. Pin images by digest in .env.local.
+services:
+  hindsight:
+    image: ${HC_HINDSIGHT_IMAGE:-ghcr.io/vectorize-io/hindsight@sha256:50311d02b4d5d2b7c5242bd336edf8735df8374eaad496a92f49c83b37d2aa06}
+    restart: unless-stopped
+    # Docker's default /dev/shm is 64MiB; embedded Postgres failed a new bank's first retain with
+    # "could not resize shared memory segment" (issue #258, copy measurement 2026-10-15).
+    shm_size: "256m"
+    env_file:
+      - path: ./.env.local
+        required: false
+    environment:
+      # MCP Bearer auth — the gateway holds this same value; clients never get it.
+      HINDSIGHT_API_MCP_AUTH_TOKEN: ${HC_HINDSIGHT_API_KEY:?set HC_HINDSIGHT_API_KEY (bootstrap seeds it)}
+      # Default profile is ko-full (Korean); --cpu-en is the lightweight English CI/constrained-host fallback.
+      # HINDSIGHT_API_LLM_* is intentionally NOT declared here — see the split-brain note below.
+      # LLM profiles (v1.0.0): CI and bootstrap profiles keep HINDSIGHT_API_LLM_PROVIDER=none; ko-full runs
+      # claude-code/claude-sonnet-5-5 with a failover chain (account1, then account2) declared in .env.local and judged by
+      # verify gate9 (scripts/llm-migrate-opus.py moves an older .env.local to that shape).
+      # Model config (embeddings + reranker) is intentionally NOT declared here.
+      # environment: outranks env_file, and an interpolation default (:-local) silently
+      # overrides the env_file value under a bare `docker compose up` (no --env-file),
+      # while keys that exist only in env_file still get injected - a split-brain that
+      # quietly disabled the Mac MPS rerank server (G003 review B3/P1, 2026-07-26).
+      # For the reranker that costs ~25x recall latency; for embeddings the same shadow
+      # would be worse, because the embedding model IS the vector dimension and a silent
+      # revert corrupts index consistency (bge-small-en 384d vs bge-m3 1024d).
+      # All HINDSIGHT_API_EMBEDDINGS_* and HINDSIGHT_API_RERANKER_* keys therefore flow
+      # through env_file: ./.env.local as the single source of truth (profiles/*.env are
+      # merged into it by scripts/seed-demo.sh at boot-0). The reranker stays hot-swappable
+      # (cross-encoder, no stored vectors) - no reindex to change it.
+    expose: ["8888"]               # internal only — NOT published to host
+    volumes:
+      - pg0:/home/hindsight/.pg0   # embedded Postgres data (named volume, UID-1000 safe)
+      - hfcache:/home/hindsight/.cache/huggingface
+      # claude-code chain members: upstream hands each member's api_key to the CLI as CLAUDE_CODE_OAUTH_TOKEN,
+      # but a pinned CLI >=2.1.280 must replace the bundled 2.1.150 (too old for claude-opus-5-5). Read-only.
+      # scripts/fetch-claude-cli.sh must run first or Docker creates a directory at the missing CLI path.
+      # Drift: verify gate9 (gate9_llm_fallback.sh).
+      - ./vendor/claude-cli/claude:/app/api/.venv/lib/python3.11/site-packages/claude_agent_sdk/_bundled/claude:ro
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8888/health').status==200 else 1)\" 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 60                  # first boot downloads embedding/reranker models
+      start_period: 30s
+
+  gateway:
+    build: ./gateway
+    restart: unless-stopped
+    command: ["python", "-m", "gateway.server"]
+    depends_on:
+      hindsight:
+        condition: service_healthy
+    env_file:
+      - path: ./.env.local
+        required: false
+      # Gateway-ONLY secrets (issue #12: Discord notifier). Kept out of .env.local on purpose:
+      # .env.local is the env_file of BOTH services, so adding a key there changes hindsight's
+      # config hash and `up -d gateway` recreates hindsight as a dependency (measured
+      # 2026-09-21 - a full upstream recreate for a notifier token). Gitignored via .env.*.local.
+      - path: ./.env.gateway.local
+        required: false
+    environment:
+      HC_UPSTREAM_BASE: http://hindsight:8888
+      HC_HINDSIGHT_API_KEY: ${HC_HINDSIGHT_API_KEY:?}
+      HC_ACL_FILE: /secrets/acl.json
+      HC_AUDIT_LOG: /audit/gateway.log
+      HC_ATTRIBUTION_MODE: ${HC_ATTRIBUTION_MODE:-body-inject}
+      # Per-bank rule profiles — ro bind mount, so editing the file + restarting the
+      # gateway applies new rules with NO image rebuild. Broken file = startup failure.
+      HC_BANK_POLICIES: /app/policies/bank-policies.json
+      # 길목 주입 trigger table (issue #12) - same ro mount, same edit-then-restart procedure.
+      HC_CONTEXT_TRIGGERS: /app/policies/context-triggers.json
+      HC_RECALL_QUERY_LOG: /audit/recall-queries.log
+      HC_PENDING_TRIGGERS: /audit/pending-triggers.jsonl
+      # upstream 웹훅 수신 경로 POST /webhooks/hindsight (issue #303). 기본 꺼짐(0) = 라우트 자체가 404.
+      # 켜려면 HC_WEBHOOK_RECEIVER=1 + .env.gateway.local 의 HC_WEBHOOK_SECRET(값은 여기에 쓰지 않는다).
+      HC_WEBHOOK_RECEIVER: ${HC_WEBHOOK_RECEIVER:-0}
+      # recall 프루너 킬스위치. 기본 1(켬). 코드 기본값도 1 이지만 이 줄이 없으면 컨테이너
+      # 안에서 변수가 unset 이라 **끌 방법이 사라진다** - 배선이 곧 롤백 경로다.
+      #   HC_RECALL_PRUNE=0 docker compose up -d gateway   # 즉시 무력화
+      HC_RECALL_PRUNE: ${HC_RECALL_PRUNE:-1}
+      # 한글 \uXXXX 이스케이프 해제 킬스위치 (issue #23). 같은 이유로 배선한다.
+      #   HC_UNESCAPE=0 docker compose up -d gateway   # 즉시 무력화
+      HC_UNESCAPE: ${HC_UNESCAPE:-1}
+      HC_REFLECT_BASED_ON_DEFAULT: ${HC_REFLECT_BASED_ON_DEFAULT:-1}
+      # 기본 꺼짐 기능 플래그 (issue #302). 배선이 곧 끄는 경로다(없으면 컨테이너 안에서 unset).
+      HC_RECALL_KIND_LABEL: ${HC_RECALL_KIND_LABEL:-0}
+      HC_KB_READ_TOOLS: ${HC_KB_READ_TOOLS:-0}
+      HC_ITEM_INVALIDATE: ${HC_ITEM_INVALIDATE:-0}
+      HC_ITEM_STATUS: ${HC_ITEM_STATUS:-0}
+      HC_ITEM_STATUS_MAX_KEYS: ${HC_ITEM_STATUS_MAX_KEYS:-8}
+      HC_ITEM_STATUS_TIMEOUT_MS: ${HC_ITEM_STATUS_TIMEOUT_MS:-1500}
+      # S1 읽기 시점 항목 상태 원장 (issue #363). 기본 꺼짐. 손잡이 = env 인라인 JSON(우선) 또는 설정 파일
+      # (정책 마운트 안, 파일 없음 = 기본값, mtime 이 바뀌면 재시작 없이 다시 읽는다). 스키마는 gateway/item_ledger.py.
+      HC_ITEM_LEDGER: ${HC_ITEM_LEDGER:-0}
+      HC_ITEM_LEDGER_CONFIG: ${HC_ITEM_LEDGER_CONFIG:-/app/policies/item-ledger.json}
+      HC_ITEM_LEDGER_KNOBS: ${HC_ITEM_LEDGER_KNOBS:-}
+      # S3 열린 키 표 (issue #377). 기본 꺼짐. 손잡이는 S1 과 같은 방식(env 인라인 JSON 우선, 설정 파일은 정책 마운트 안,
+      # 파일 없음 = 기본값). 사이드 저장소(S4 #376 이 쓰는 sqlite)는 정책 마운트 안에서 읽기 전용으로 연다. 스키마는 gateway/item_open_table.py.
+      # 저장소는 한 뱅크 전용: HC_ITEM_OPEN_TABLE_BANK(저장소 뱅크 id)와 요청 뱅크가 같을 때만 붙인다(빈 값 = 붙이지 않음).
+      HC_ITEM_OPEN_TABLE: ${HC_ITEM_OPEN_TABLE:-0}
+      HC_ITEM_OPEN_TABLE_CONFIG: ${HC_ITEM_OPEN_TABLE_CONFIG:-/app/policies/item-open-table.json}
+      HC_ITEM_OPEN_TABLE_KNOBS: ${HC_ITEM_OPEN_TABLE_KNOBS:-}
+      HC_ITEM_ROLES_DB: ${HC_ITEM_ROLES_DB:-/app/policies/item-roles.sqlite}
+      HC_ITEM_OPEN_TABLE_BANK: ${HC_ITEM_OPEN_TABLE_BANK:-}
+      # S2 retain 작업 키 검사(#364): off(기본) / warn / reject. 운영 적용은 승인 창에서.
+      HC_RETAIN_ITEM_KEY: ${HC_RETAIN_ITEM_KEY:-off}
+    ports:
+      - "${HC_GATEWAY_BIND:-127.0.0.1:8888}:8888"
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./policies:/app/policies:ro
+      - ./audit:/audit
+    networks: [internal]
+
+  # Hindsight's bundled web UI (Next.js on 9999) for eyeballing the bank by hand.
+  # hindsight stays internal-only, so the UI needs its own host door; this socat sidecar
+  # is it. Deliberately NOT the gateway (8888): that port is the ACL-enforced, audited
+  # path for agents, and folding a browser UI behind it would put unaudited traffic on
+  # the same door. This tunnel is UNAUTHENTICATED and bypasses the gateway ACL, so it is
+  # loopback-bound: never widen HC_UI_BIND to 0.0.0.0.
+  ui-tunnel:
+    image: ${HC_SOCAT_IMAGE:-alpine/socat:latest}
+    restart: unless-stopped
+    command: ["tcp-listen:9999,fork,reuseaddr", "tcp:hindsight:9999"]
+    depends_on:
+      hindsight:
+        condition: service_healthy
+    ports:
+      - "${HC_UI_BIND:-127.0.0.1:9999}:9999"
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  # The default follows the project name, i.e. the automatic name (<project>_pg0), so nothing changes unless
+  # HC_PG0_VOLUME is set (#249 points it at the v1.0.0 copy). Never write the production name literally here.
+  pg0:
+    name: ${HC_PG0_VOLUME:-${COMPOSE_PROJECT_NAME}_pg0}
+  hfcache:

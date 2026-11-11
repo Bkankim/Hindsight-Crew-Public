@@ -1,0 +1,48 @@
+{
+ "closed": [
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "B01",
+   "item": "SYNTH-ITEM-B01",
+   "keywords": [
+    "#904"
+   ],
+   "project_hint": "proj-a"
+  },
+  {
+   "bank_evidence": null,
+   "done_external": "x",
+   "id": "B02",
+   "item": "SYNTH-ITEM-B02",
+   "keywords": [
+    "echo-kw"
+   ],
+   "project_hint": null
+  }
+ ],
+ "controls": [
+  {
+   "expect": "open",
+   "id": "C01",
+   "item": "SYNTH-ITEM-C01",
+   "keywords": [
+    "#903"
+   ],
+   "project_hint": "proj-a"
+  },
+  {
+   "expect": "open",
+   "id": "BC01",
+   "item": "SYNTH-ITEM-BC01",
+   "keywords": [
+    "#905"
+   ],
+   "project_hint": "proj-a"
+  }
+ ],
+ "ignore_mentioned_at_from": "2026-10-28T15:00:00Z",
+ "query_date": "2026-10-28",
+ "query_instruction": "SYNTH-INSTRUCTION answer as of the query date",
+ "schema_version": 1
+}

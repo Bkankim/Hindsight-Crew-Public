@@ -1,0 +1,16 @@
+{
+ "A": {
+  "C01": true,
+  "C02": false,
+  "K01": true,
+  "K02": true,
+  "K03": false,
+  "K04": null
+ },
+ "B": {
+  "B01": true,
+  "B02": false,
+  "BC01": true,
+  "C01": true
+ }
+}

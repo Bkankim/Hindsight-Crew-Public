@@ -1,0 +1,133 @@
+{
+ "a_run": {
+  "closed_open": 1,
+  "controls_open": 2,
+  "controls_total": 3,
+  "decidable": true,
+  "invalid": 0,
+  "status": "valid"
+ },
+ "breakdown": {
+  "a_reflect_list": {
+   "all": {
+    "closed_open": 1,
+    "closed_total": 6,
+    "controls_open": 2,
+    "controls_total": 3,
+    "invalid": 0
+   },
+   "set:A": {
+    "closed_open": 1,
+    "closed_total": 4,
+    "controls_open": 1,
+    "controls_total": 2,
+    "invalid": 0
+   },
+   "set:B": {
+    "closed_open": 0,
+    "closed_total": 2,
+    "controls_open": 1,
+    "controls_total": 2,
+    "invalid": 0
+   }
+  },
+  "b_knowledge_page_status": {
+   "all": {
+    "closed_open": 3,
+    "closed_total": 6,
+    "controls_open": 2,
+    "controls_total": 3,
+    "invalid": 1
+   },
+   "set:A": {
+    "closed_open": 2,
+    "closed_total": 4,
+    "controls_open": 2,
+    "controls_total": 2,
+    "invalid": 1
+   },
+   "set:B": {
+    "closed_open": 1,
+    "closed_total": 2,
+    "controls_open": 1,
+    "controls_total": 2,
+    "invalid": 0
+   }
+  },
+  "c_recall_status": {
+   "all": {
+    "closed_open": 2,
+    "closed_total": 6,
+    "controls_open": 3,
+    "controls_total": 3,
+    "invalid": 0
+   },
+   "set:A": {
+    "closed_open": 2,
+    "closed_total": 4,
+    "controls_open": 2,
+    "controls_total": 2,
+    "invalid": 0
+   },
+   "set:B": {
+    "closed_open": 0,
+    "closed_total": 2,
+    "controls_open": 2,
+    "controls_total": 2,
+    "invalid": 0
+   }
+  }
+ },
+ "paths": {
+  "a_reflect_list": {
+   "B01": "not-open",
+   "B02": "not-open",
+   "BC01": "open",
+   "C01": "not-open",
+   "C02": "open",
+   "K01": "not-open",
+   "K02": "not-open",
+   "K03": "not-open",
+   "K04": "open"
+  },
+  "b_knowledge_page_status": {
+   "B01": "not-open",
+   "B02": "open",
+   "BC01": "not-open",
+   "C01": "open",
+   "C02": "open",
+   "K01": "open",
+   "K02": "open",
+   "K03": "not-open",
+   "K04": "invalid"
+  },
+  "c_recall_status": {
+   "B01": "not-open",
+   "B02": "not-open",
+   "BC01": "open",
+   "C01": "open",
+   "C02": "open",
+   "K01": "not-open",
+   "K02": "open",
+   "K03": "not-open",
+   "K04": "open"
+  }
+ },
+ "query_timestamp": "2026-10-28T14:59:59Z",
+ "set": [
+  "K01",
+  "K02",
+  "K03",
+  "K04",
+  "C01",
+  "C02",
+  "B01",
+  "B02",
+  "BC01"
+ ],
+ "sets": [
+  "A",
+  "B"
+ ],
+ "target": "next"
+}

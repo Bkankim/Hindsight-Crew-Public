@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- issue #376 S4 역할 판정기 주기 실행 예시. 설치하지 않는 것이 기본이다(운영 기동·백필은 승인 창 작업).
+       poll 은 한 번 돌고 끝난다. 사본이 아닌 대상이라 allow-prod 가 필요하다. 뱅크는 .env.host.local 의 HC_PERSONAL_BANK. -->
+  <key>Label</key><string>__PREFIX__.hindsight-item-roles-sidecar</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__UV__</string>
+    <string>run</string>
+    <string>--no-project</string>
+    <string>--python</string>
+    <string>3.12</string>
+    <string>python</string>
+    <string>__REPO__/scripts/item_roles_sidecar.py</string>
+    <string>poll</string>
+    <string>--db</string>
+    <string>__REPO__/policies/item-roles.sqlite</string>
+    <string>--allow-prod</string>
+    <string>--max-usd</string>
+    <string>0.5</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key><string>__PATH__</string>
+  </dict>
+  <key>StartInterval</key><integer>900</integer>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/hindsight-item-roles/sidecar.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/hindsight-item-roles/sidecar.log</string>
+</dict>
+</plist>

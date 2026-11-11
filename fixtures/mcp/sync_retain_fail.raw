@@ -1,0 +1,3 @@
+event: message
+data: {"jsonrpc":"2.0","id":4,"result":{"content":[{"type":"text","text":"1 validation error for call[sync_retain]\ncontent\n  Missing required argument [type=missing_argument, input_value={'tags': ['kind:probe']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing_argument"}],"isError":true}}
+

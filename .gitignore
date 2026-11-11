@@ -1,0 +1,44 @@
+# Secrets & per-deployment config (NEVER commit)
+# .env.local* (not just .env.local): ad-hoc backups like .env.local.bak-<tag>
+# carry the same live API key + PG password and were one `git add -A` from a commit.
+.env.local*
+.env.*.local
+secrets/
+*.key
+*.pem
+# Backups & DR artifacts
+backups/
+*.tar
+*.tar.gz
+*.dump
+*.sql
+# Audit logs (may contain token fingerprints; keep out of git)
+audit*.log
+audit/
+# Probe / verify runtime artifacts
+fixtures/contract-probe.out.json
+verify/.last-run/
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# local tool state
+.fablize/
+.yew/
+.kit/
+
+# restore-test stranded-main marker (see scripts/restore-test.sh)
+.hc-restore-test-stopped-main
+
+# issue #13 재생 하네스 코퍼스 (실사용 쿼리 텍스트 - 커밋 금지)
+bench/.data/
+vendor/
+
+# issue #187 설치별 정책·트리거 오버레이 (뱅크 설명에 사적 맥락이 들어간다 - 커밋 금지)
+policies/local/
+
+# issue #286 뱅크별 설정 오버레이 (미션 같은 사적 맥락이 들어간다 - 커밋 금지)
+templates/bank-config/local/
+policies/item-roles.sqlite*

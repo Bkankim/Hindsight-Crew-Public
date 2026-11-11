@@ -1,0 +1,35 @@
+{
+  "probedAt": "2026-10-29T10:13:49Z",
+  "method": "POST",
+  "path": "/v1/default/banks/probe-n0/memories",
+  "request": {
+    "items": [
+      {
+        "content": "[probe] rest ok probe-n0-20261029T101342Z",
+        "tags": [
+          "project:hindsight-crew",
+          "kind:probe"
+        ],
+        "timestamp": "2026-07-26T00:00:00Z",
+        "context": "probe"
+      }
+    ],
+    "async": false
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "bank_id": "probe-n0",
+    "items_count": 1,
+    "async": false,
+    "operation_id": null,
+    "operation_ids": null,
+    "usage": {
+      "input_tokens": 2849,
+      "output_tokens": 97,
+      "total_tokens": 2946,
+      "cached_tokens": 1591,
+      "thoughts_tokens": 0
+    }
+  }
+}

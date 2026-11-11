@@ -1,0 +1,23 @@
+{
+  "banks": {
+    "personal-demo": {
+      "tags_required": true,
+      "tag_prefixes": ["project", "kind", "topic", "user"],
+      "tag_aliases": {
+        "kind:done": "kind:completion",
+        "user:demoalt": "user:demo",
+        "user:demofull": "user:demo",
+        "project:quince": "project:hickory-bell",
+        "topic:aside": "project:aside"
+      },
+      "tag_closed_prefixes": ["kind", "user"],
+      "tag_required_prefixes": ["kind"],
+      "tag_candidate_prefixes": ["project"],
+      "tag_vocabulary": {
+        "kind": ["completion", "decision", "fix", "gotcha"],
+        "project": ["aside", "larch-yard", "hindsight-crew", "rowan-tide", "hickory-bell"],
+        "user": ["demo"]
+      }
+    }
+  }
+}

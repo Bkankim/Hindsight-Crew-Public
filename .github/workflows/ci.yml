@@ -1,0 +1,30 @@
+name: ci
+on:
+  # 브랜치 push는 PR 이벤트와 같은 커밋을 두 번 돌리므로 main push만 받는다.
+  push:
+    branches: [main]
+  pull_request:
+concurrency:
+  # 같은 PR에 새 커밋이 오면 돌던 옛 실행을 취소한다. main은 취소하지 않지만 대기는 1개뿐이라,
+  # 머지가 몰리면 중간 커밋은 건너뛰고 돌던 실행을 끝낸 뒤 최신 커밋을 돈다(쿼터 절약 우선).
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  gateway-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.11 = gateway production runtime (gateway/Dockerfile python:3.11-slim).
+        # 3.12 is covered by the local/worker verification command
+        # (uv run --python 3.12 ...), which every worker runs before its PR.
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python-version }}" }
+      - run: pip install -r gateway/requirements.txt -r requirements-dev.txt
+      - run: python -m pytest -p no:warnings -o addopts="" -q
+        # NOTE: the live 7-gate verify-all needs the dockerized Hindsight stack (./bootstrap),
+        # which is run locally/self-hosted, not in this hosted-runner unit job.

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "_doc": "재태깅 전용 매핑(issue #43). 쓰는 시점 alias(policies/bank-policies.json tag_aliases)와 분리된 일회성 데이터다. 계획기(scripts/tag_retag_plan.py)가 저장 태그에 정규화 전에 덧씌운다. 키는 앞뒤 공백·대소문자를 떼고 비교한다. merged_restore 는 A 단계에서 일부러 비워 두었다: B 에서 라이브 export(scripts/tag-hygiene-export.sh)와 tag_hygiene.py report 로 합쳐진 태그 문자열(문제 유형 merged-slug, how embedded-prefix)을 확인해 {합쳐진 문자열: [복원 태그 목록]}으로 채운 뒤 plan 을 돌린다. 채우지 않으면 그 문서들은 unresolved 로 남는다.",
+  "merged_restore": {},
+  "user_to_topic": {
+    "user:kauri-gate": "topic:kauri-gate"
+  },
+  "project_merge": {
+    "project:wattle-cove-2026": "project:rowan-tide",
+    "project:banksia-loft": "project:elm-gazette",
+    "project:myall-shore": "project:larch-yard",
+    "project:birch": "project:fir-easel",
+    "project:tupelo": "project:alder-thistle",
+    "project:juniper": "project:poplar-kiln"
+  },
+  "label_to_kind": {
+    "완료": "kind:completion",
+    "발견": "kind:discovery",
+    "결정": "kind:decision",
+    "규칙": "kind:rule",
+    "검증": "kind:verification",
+    "설정": "kind:setting",
+    "조사": "kind:research",
+    "개선": "kind:improvement",
+    "리뷰": "kind:review",
+    "completion": "kind:completion",
+    "discovery": "kind:discovery",
+    "decision": "kind:decision",
+    "rule": "kind:rule",
+    "verification": "kind:verification",
+    "setting": "kind:setting",
+    "research": "kind:research",
+    "improvement": "kind:improvement",
+    "review": "kind:review"
+  }
+}

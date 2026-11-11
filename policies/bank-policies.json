@@ -1,0 +1,39 @@
+{
+  "defaults": {
+    "tags_required": false,
+    "tag_prefixes": [],
+    "content_prefix_pattern": null,
+    "allowed_strategies": null,
+    "blocked_operations": [],
+    "timestamp_autofill": true,
+    "recall_max_tokens_floor": 4096,
+    "instructions_text": null
+  },
+  "banks": {
+    "personal-alice": {
+      "tags_required": true,
+      "tag_prefixes": [
+        "project",
+        "kind",
+        "topic",
+        "user"
+      ],
+      "content_prefix_pattern": "^\\[[^\\]]{1,12}\\] ",
+      "allowed_strategies": [],
+      "timestamp_autofill": true,
+      "recall_max_tokens_floor": 0
+    },
+    "team-eng": {
+      "tags_required": true,
+      "tag_prefixes": [
+        "project",
+        "kind",
+        "topic",
+        "user"
+      ],
+      "content_prefix_pattern": null,
+      "allowed_strategies": [],
+      "timestamp_autofill": true
+    }
+  }
+}

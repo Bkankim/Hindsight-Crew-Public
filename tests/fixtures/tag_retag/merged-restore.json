@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "_doc": "테스트 전용 합쳐진 태그 복원 매핑. 운영자 재태깅 표의 merged_restore 는 운영 문자열을 B 단계에서 채우므로(그 표는 공개판에 없다) 여기서 형식만 검증한다. 문자열은 지어낸 값이다.",
+  "merged_restore": {
+    "project:fixmerge-kind-gotcha-topic-blog": ["project:larch-yard", "kind:gotcha", "topic:blog"]
+  }
+}

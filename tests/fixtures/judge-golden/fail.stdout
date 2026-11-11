@@ -1,0 +1,121 @@
+{
+  "run_id": "t",
+  "baseline": "a",
+  "candidate": "b",
+  "split": "dev",
+  "n_queries": 40,
+  "rounds": 3,
+  "bench_clock": "2026-01-01T00:00:00Z",
+  "verdict": "FAIL",
+  "reasons": [
+    "cold-unmeasured:no-cold-input"
+  ],
+  "accuracy": {
+    "verdict": "invariant",
+    "classes": {
+      "identical": 40
+    },
+    "baseline_nondeterministic": 0,
+    "bad_keys": []
+  },
+  "cost": {
+    "verdict": "unchanged",
+    "rel_change": 0.0,
+    "baseline_tokens": 40000.0,
+    "candidate_tokens": 40000.0,
+    "queries_increased": 0,
+    "queries_decreased": 0,
+    "worst_queries": [
+      [
+        "q00",
+        0.0
+      ],
+      [
+        "q01",
+        0.0
+      ],
+      [
+        "q02",
+        0.0
+      ],
+      [
+        "q03",
+        0.0
+      ],
+      [
+        "q04",
+        0.0
+      ]
+    ]
+  },
+  "speed": {
+    "verdict": "regressed",
+    "crossover": false,
+    "geo_mean_ratio": 1.1,
+    "ci95": [
+      1.1,
+      1.1
+    ],
+    "margin": 0.01,
+    "aa_excess": 0.0,
+    "n_queries": 40,
+    "incomplete_phase_queries": null,
+    "tail": {
+      "queries_over": 40,
+      "limit": 2,
+      "regressed": true
+    },
+    "tail_regressed": true,
+    "p95_ratio": 1.1,
+    "p95_ci95": [
+      1.1,
+      1.1
+    ],
+    "tail_metrics": {
+      "p95": {
+        "ratio": 1.1,
+        "ci95": [
+          1.1,
+          1.1
+        ],
+        "aa_noise": 0.0,
+        "tolerance": 0.01,
+        "n": 117,
+        "verdict": "regressed"
+      },
+      "p99": {
+        "ratio": 1.1,
+        "ci95": [
+          1.1,
+          1.1
+        ],
+        "aa_noise": 0.0,
+        "tolerance": 0.01,
+        "n": 117,
+        "verdict": "regressed"
+      }
+    },
+    "order_effect": {
+      "checked": true,
+      "mean_log_diff": -0.0,
+      "ci95": [
+        -0.0,
+        0.0
+      ],
+      "state_dependent": false
+    },
+    "pairs": 120,
+    "contaminated_pairs": 0,
+    "contamination_rate": 0.0,
+    "prod_windows": 0,
+    "baseline_median_ms": 5732.5,
+    "candidate_median_ms": 6305.75
+  },
+  "provenance": null,
+  "configs": null,
+  "warm_verdict": "FAIL",
+  "cold": {
+    "verdict": "unmeasured",
+    "reason": "no-cold-input"
+  }
+}

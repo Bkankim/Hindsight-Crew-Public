@@ -1,0 +1,7 @@
+# 형식: 경로:패턴:이유  (경로+패턴으로 매칭, 줄 번호 없음)
+# 주석·docstring 줄만 허용한다. 실행 코드 줄은 여기 넣지 말고 설정값으로 바꾼다 (tests/test_no_owner_literals.py).
+gateway/bank_policies.py:personal-demo:모듈 docstring의 정책 파일 모양 예시
+gateway/recall_prune.py:personal-demo:모듈 docstring의 2026-09-22 실측 기록
+scripts/scheduled_checks.py:personal-demo:모듈 docstring의 tag-hygiene-44 잡 설명
+scripts/tag-hygiene-export.sh:personal-demo:주석 - 사용 예시
+verify/gate7_mcp_enforce.sh:personal-demo:주석 - 게이트가 운영 뱅크에 쓰지 않는 이유

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# install - one-command owner install on a Mac (issue #189). Thin shim: finds a python3 the same way
+# the host scripts do (scripts/hc-python.sh) and hands over to scripts/install/hc_install.py.
+#   ./install --owner <slug> [--claude-token-env VAR] [--write-claude-md] [--launchd-prefix P] [--dry-run]
+#   ./install --uninstall [--owner <slug>] [--purge] [--dry-run]
+# `./install --help` lists everything. ./bootstrap is unchanged: install calls it as step 5.
+set -eu
+ROOT="$(cd "$(dirname "$0")" && pwd)"; cd "$ROOT"
+. "$ROOT/scripts/hc-python.sh"
+hc_find_python || { echo "install: no usable python3 found (set HC_PYTHON, or install python3)" >&2; exit 1; }
+exec "$PY" "$ROOT/scripts/install/hc_install.py" "$@"

@@ -1,0 +1,13 @@
+diff --git a/gateway/recall_prune.py b/gateway/recall_prune.py
+index 08c7349..d4c39e0 100644
+--- a/gateway/recall_prune.py
++++ b/gateway/recall_prune.py
+@@ -41,7 +41,7 @@ from . import reframe
+ # 신호라(1위 1.059 vs 4위 0.987 같은 격차) 버리면 무관한 결과를 관련 있는 것처럼 읽게 된다.
+ # 무손실 제거만으로 이미 20.0% 를 얻으므로 나머지는 사지 않는다. 메커니즘은 남겨 둔다 -
+ # 평가 하네스(Phase 1~3)가 손실을 정량화한 뒤에야 다시 채울 수 있다.
+-DROP_ALWAYS: frozenset = frozenset()
++DROP_ALWAYS: frozenset = frozenset({"scores"})  # FIXTURE: 정보 손실 -> lossy 기대
+ 
+ # 값이 이 필드와 같으면 중복이므로 제거한다(복원 가능 = 무손실).
+ REDUNDANT_WITH = {"occurred_end": "occurred_start", "mentioned_at": "occurred_start"}

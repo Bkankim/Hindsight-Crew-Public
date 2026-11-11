@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "triggers": [
+    {
+      "id": "demo-dash-login",
+      "bank": "personal-demo",
+      "tools": [
+        "aside"
+      ],
+      "all_of": [
+        [
+          "democloud",
+          "dash.democloud",
+          "데모클라우드",
+          "데모 클라우드",
+          "dc 대시보드",
+          "dc dash",
+          "dc 2단계",
+          "dc 캐시",
+          "dc 퍼지"
+        ]
+      ],
+      "recall": {
+        "query": "대시보드 로그인 절차 - 2단계 코드는 누가 만들고 브라우저 도구는 무엇을 하나"
+      },
+      "max_memories": 2,
+      "max_tokens": 500,
+      "note": "데모 트리거. 도구 aside와 대시보드 제품명을 함께 요구한다. 다른 서비스의 2단계 인증만으로는 발화하지 않는다. 쿼리만 고정."
+    }
+  ]
+}

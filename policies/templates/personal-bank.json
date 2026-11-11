@@ -1,0 +1,95 @@
+{
+  "banks": {
+    "personal-__OWNER__": {
+      "tags_required": true,
+      "tag_prefixes": [
+        "project",
+        "kind",
+        "topic",
+        "user",
+        "item"
+      ],
+      "content_prefix_pattern": "^\\[[^\\]]{1,12}\\] ",
+      "allowed_strategies": [],
+      "timestamp_autofill": true,
+      "instructions_text": "Bank convention (personal-__OWNER__): write content as one line, \"[작업 종류] 무엇을 - 결과/요지\" - e.g. \"[개선] 게이트웨이 태그 정규화 - 첫 시도 성공\". Retain verified work units, reasoned decisions, costly-to-rediscover findings, and new rules or preferences; skip intermediate steps and anything cheaply re-derivable from git or the repo. Tag with the project it belongs to plus its kind (kind:decision, kind:gotcha, kind:rule).",
+      "tag_aliases": {
+        "kind:done": "kind:completion",
+        "kind:task-done": "kind:completion",
+        "kind:task-completion": "kind:completion",
+        "kind:work-log": "kind:completion",
+        "kind:work": "kind:completion",
+        "kind:cleanup": "kind:completion",
+        "kind:lesson": "kind:gotcha",
+        "kind:bug-finding": "kind:gotcha",
+        "kind:policy": "kind:decision",
+        "kind:plan": "kind:decision",
+        "kind:todo": "kind:decision",
+        "kind:solution": "kind:fix",
+        "kind:recovery": "kind:fix",
+        "kind:investigation": "kind:research",
+        "kind:config": "kind:setting",
+        "kind:setup": "kind:setting",
+        "kind:test": "kind:verification",
+        "kind:audit": "kind:verification",
+        "kind:finding": "kind:discovery",
+        "kind:infra": "kind:ops",
+        "kind:playbook": "kind:rule",
+        "topic:policy": "kind:decision",
+        "topic:config": "kind:setting",
+        "topic:setup": "kind:setting",
+        "topic:verify": "kind:verification",
+        "topic:verification": "kind:verification",
+        "topic:runtime-verification": "kind:verification",
+        "topic:handoff": "kind:handoff",
+        "topic:infra": "kind:ops",
+        "topic:playbook": "kind:rule"
+      },
+      "tag_closed_prefixes": [
+        "kind",
+        "user"
+      ],
+      "tag_required_prefixes": [
+        "kind"
+      ],
+      "tag_candidate_prefixes": [],
+      "item_repo_aliases": {
+        "hc": "hindsight-crew",
+        "hindsight-crew": "hindsight-crew"
+      },
+      "tag_vocabulary": {
+        "kind": [
+          "artifact",
+          "benchmark",
+          "completion",
+          "content",
+          "context",
+          "correction",
+          "decision",
+          "diagnostic",
+          "discovery",
+          "edit",
+          "fact",
+          "fix",
+          "gotcha",
+          "handoff",
+          "improvement",
+          "incident",
+          "integration",
+          "ops",
+          "preference",
+          "probe",
+          "research",
+          "review",
+          "rule",
+          "setting",
+          "status",
+          "verification"
+        ],
+        "user": [
+          "__OWNER__"
+        ]
+      }
+    }
+  }
+}

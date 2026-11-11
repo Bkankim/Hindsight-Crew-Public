@@ -1,0 +1,18 @@
+아래 <recall_results>는 메모리 뱅크 recall 결과 행이다(한 줄에 기억 하나, JSON). 이 결과를 보고 기준일 {query_date} 현재 열린 일 목록을 써라.
+
+출력은 JSON 객체 하나만 쓴다(앞뒤 설명 없이). 모양:
+{{"items": [{{"key": "<repo>#<n>", "name": "...", "status": "open", "evidence_ids": ["..."], "quote": "...", "unverified": false}}]}}
+
+항목 필드:
+- key: 이슈·PR 번호가 있으면 "<repo>#<n>" 모양. 없으면 이 필드를 뺀다.
+- name: 작업 이름(짧게).
+- status: open(열린 일), done(끝난 일), residual(본체는 끝났고 잔여만 남음) 중 하나.
+- evidence_ids: 근거로 삼은 기억 id 목록(<recall_results>의 id).
+- quote: 근거 기억에서 옮긴 한 문장.
+- unverified: 선택 불린, 기본 false. 상태가 근거 기억으로 확인되지 않은 추정이면 true.
+
+추가 지시: 항목을 열린 일(status open)로 쓰기 전에, <recall_results> 안에 그 작업이 기준일 이전에 끝났다는 기억(완료·머지·닫힘·마감·배포·종결 결정)이 있는지 항목마다 확인한다. 그런 기억이 그 작업을 열린 일로 적은 기억보다 나중이면 status를 done으로 쓴다.
+
+<recall_results>
+{recall_rows}
+</recall_results>

@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# bootstrap — the unattended single entrypoint. Detects the profile, seeds demo
+# secrets/ACL if absent, builds + starts the stack, waits for health, runs verify-all,
+# and prints the OBSERVED resource footprint (feeds README "Minimum"). Exit code == verify-all.
+#   ./bootstrap            # ko-full (Korean, DEFAULT; needs ~4GB+ RAM, locked at boot-0)
+#   ./bootstrap --cpu-en   # cpu-en (lightweight English ~217MB; CI/constrained-host fallback)
+#   ./bootstrap --gpu      # gpu (Korean via TEI; needs CUDA GPU)
+#   ./bootstrap --mac-mps  # ko-full-mac-mps (macOS/Apple Silicon; needs the host MPS rerank sidecar - see rerank-server/, launchd, README.md)
+set -eu
+ROOT="$(cd "$(dirname "$0")" && pwd)"; cd "$ROOT"
+
+# The profile is a boot-0 decision: the embedding model IS the vector dimension, so an
+# existing deployment must not quietly change it. scripts/seed-demo.sh enforces that by
+# skipping the profile merge whenever .env.local exists, which means a flag passed here
+# is ignored - but printing the flag's value made it look applied. Print what actually
+# governs, and say plainly when the flag lost.
+PROFILE="$(bash scripts/profile-detect.sh "$@")"
+LOCKED=""
+[ -f .env.local ] && LOCKED="$(grep -E '^HC_PROFILE=' .env.local | head -1 | cut -d= -f2- || true)"
+if [ -n "$LOCKED" ] && [ "$LOCKED" != "$PROFILE" ]; then
+  echo "==> profile: $LOCKED (locked by .env.local)"
+  echo "    NOTE requested '$PROFILE' was ignored: the profile is fixed at boot-0 and" >&2
+  echo "         changing it requires re-seeding, not a flag. See docs/operations.md (section 8)." >&2
+  PROFILE="$LOCKED"
+else
+  echo "==> profile: $PROFILE"
+fi
+export HC_PROFILE="$PROFILE"
+
+echo "==> seeding (idempotent)"
+bash scripts/seed-demo.sh
+
+echo "==> claude CLI for the claude-code reflect members (pinned, integrity-checked)"
+bash scripts/fetch-claude-cli.sh
+
+echo "==> build + up stack"
+docker compose --env-file .env.local up -d --build
+
+echo "==> waiting for gateway health"
+GW="http://$(grep -E '^HC_GATEWAY_BIND=' .env.local 2>/dev/null | cut -d= -f2 || echo 127.0.0.1:8888)"
+ok=0
+for i in $(seq 1 90); do
+  c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "$GW/healthz" 2>/dev/null || echo 000)
+  [ "$c" = "200" ] && { ok=1; break; }
+  sleep 3
+done
+[ "$ok" = "1" ] || { echo "!! gateway did not become healthy"; docker compose --env-file .env.local logs --tail 20; exit 1; }
+
+echo "==> observed footprint (README Minimum is measured, not guessed)"
+docker stats --no-stream --format '    {{.Name}}: mem {{.MemUsage}} cpu {{.CPUPerc}}' 2>/dev/null || true
+DISK=$(docker system df --format '{{.Type}} {{.Size}}' 2>/dev/null | tr '\n' ' ')
+echo "    images+volumes: $DISK"
+
+echo "==> verify-all"
+bash verify/verify-all.sh
+rc=$?
+echo "==> bootstrap done (verify-all exit=$rc)"
+exit $rc
